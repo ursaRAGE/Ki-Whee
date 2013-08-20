@@ -1,7 +1,7 @@
 package com.ursarage.starassault;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
+//import com.badlogic.gdx.tools.imagepacker.TexturePacker2;
 import com.ursarage.starassault.screens.GameScreen;
 
 public class StarAssault extends Game
