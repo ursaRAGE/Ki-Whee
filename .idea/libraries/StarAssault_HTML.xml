@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="StarAssault HTML">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/star-assault-html/war/WEB-INF/lib/gdx-backend-gwt-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/star-assault-html/war/WEB-INF/lib/gdx-backend-gwt.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
