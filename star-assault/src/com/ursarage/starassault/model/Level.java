@@ -6,56 +6,42 @@ public class Level {
 
   private int mWidth;
   private int mHeight;
+  private Vector2 mStartingPosition;
   private Block[][] mBlockArray;
   private Barrel[][] mBarrelArray;
 
-  public int getWidth() {
-    return mWidth;
+  public Level() {
+    loadDemoLevel();
   }
 
-  public void setWidth(int width) {
-    mWidth = width;
+  public int getWidth() {
+    return mWidth;
   }
 
   public int getHeight() {
     return mHeight;
   }
 
-  public void setHeight(int height) {
-    mHeight = height;
+  public Vector2 getStartingPosition() {
+    return mStartingPosition;
   }
 
   public Block[][] getBlockArray() {
     return mBlockArray;
   }
 
-  public void setBlocks(Block[][] blocks) {
-    mBlockArray = blocks;
-  }
-
   public Barrel[][] getBarrelArray() {
     return mBarrelArray;
-  }
-
-  public void setBarrels(Barrel[][] barrels) {
-    mBarrelArray = barrels;
-  }
-
-  public Level() {
-    loadDemoLevel();
   }
 
   public Block getBlock(int x, int y) {
     return mBlockArray[x][y];
   }
 
-  public Barrel getBarrel(int x, int y) {
-    return mBarrelArray[x][y];
-  }
-
   private void loadDemoLevel() {
     mWidth = 16;
     mHeight = 16;
+    mStartingPosition = new Vector2(1, 1);
     mBlockArray = new Block[mWidth][mHeight];
     mBarrelArray = new Barrel[mWidth][mHeight];
 
@@ -108,68 +94,33 @@ public class Level {
     addBlock(10, 14);
 
     // Barrel run #1
-    addBarrel(10, 0, 0.15f, 90.0f, true);
-    addBarrel(14, 0, 0.15f, 0.0f, true);
-    addBarrel(14, 3, 0.15f, -90.0f, true);
-    addBarrel(12, 3, 0.15f, 0.0f, true);
-    addBarrel(12, 9, 0.15f, 90.0f, true);
-    addBarrel(14, 9, 0.15f, 0.0f, true);
-    addBarrel(14, 14, 0.15f, -90.0f, true);
+    addBarrel(10, 0, 0.15f, 90.0f, 0.4f, true);
+    addBarrel(14, 0, 0.15f, 0.0f, 0.3f, true);
+    addBarrel(14, 3, 0.2f, -90.0f, 0.1f, true);
+    addBarrel(12, 3, 0.2f, 0.0f, 0.0f, true);
+    addBarrel(12, 9, 0.3f, 90.0f, 0.0f, true);
+    addBarrel(14, 9, 0.3f, 0.0f, 0.0f, true);
+    addBarrel(14, 14, 0.3f, -90.0f, 0.0f, true);
 
     // Barrel run #2
-    addBarrel(1, 13, 0.2f, 180.0f, true);
-    addBarrel(1, 8, 0.2f, 45.0f, true);
-    addBarrel(5, 12, 0.2f, 135.0f, true);
-    addBarrel(9, 8, 0.2f, 180.0f, true);
-    addBarrel(9, 6, 0.2f, 225.0f, true);
-    addBarrel(7, 4, 0.2f, 270.0f, true);
-    addBarrel(5, 4, 0.2f, 315.0f, true);
-    addBarrel(2, 7, 0.2f, 180.0f, true);
+    addBarrel(1, 13, 0.3f, 180.0f, 0.0f, true);
+    addBarrel(1, 8, 0.3f, 45.0f, 0.0f, true);
+    addBarrel(5, 12, 0.3f, 135.0f, 0.0f, true);
+    addBarrel(9, 8, 0.3f, 180.0f, 0.0f, true);
+    addBarrel(9, 6, 0.3f, 225.0f, 0.0f, true);
+    addBarrel(7, 4, 0.3f, 270.0f, 0.0f, true);
+    addBarrel(5, 4, 0.3f, 315.0f, 0.0f, true);
+    addBarrel(2, 7, 0.3f, 180.0f, 0.0f, true);
 
     // Extra barrel
-    addBarrel(9, 2, 0.2f, 0.0f, false);
+    addBarrel(9, 2, 0.2f, 0.0f, 0.0f, false);
   }
 
   private void addBlock(int col, int row) {
     mBlockArray[col][row] = new Block(new Vector2(col, row));
   }
 
-  private void addBarrel(int col, int row, float speed, float angle, boolean automatic) {
-    mBarrelArray[col][row] = new Barrel(new Vector2(col, row), speed, angle, automatic);
+  private void addBarrel(int col, int row, float speed, float angle, float delay, boolean automatic) {
+    mBarrelArray[col][row] = new Barrel(new Vector2(col, row), speed, angle, delay, automatic);
   }
 }
-
-//  private void loadDemoLevel() {
-//    mWidth = 10;
-//    mHeight = 7;
-//    mBlockArray = new Block[mWidth][mHeight];
-//    mBarrelArray = new Barrel[mWidth][mHeight];
-//
-//    for (int col = 0; col < mWidth; col++) {
-//      for (int row = 0; row < mHeight; row++) {
-//        mBlockArray[col][row] = null;
-//        mBarrelArray[col][row] = null;
-//      }
-//    }
-//
-//    for (int col = 0; col < 10; col++) {
-//      mBlockArray[col][0] = new Block(new Vector2(col, 0));
-//      mBlockArray[col][6] = new Block(new Vector2(col, 6));
-//      if (col != 1 && col != 2) {
-//        mBlockArray[col][1] = new Block(new Vector2(col, 1));
-//      }
-//    }
-//
-//    mBlockArray[9][2] = new Block(new Vector2(9, 2));
-//    mBlockArray[9][3] = new Block(new Vector2(9, 3));
-//    mBlockArray[9][4] = new Block(new Vector2(9, 4));
-//    mBlockArray[9][5] = new Block(new Vector2(9, 5));
-//
-//    mBlockArray[6][3] = new Block(new Vector2(6, 3));
-//    mBlockArray[6][4] = new Block(new Vector2(6, 4));
-//    mBlockArray[6][5] = new Block(new Vector2(6, 5));
-//
-//    mBarrelArray[1][2] = new Barrel(new Vector2(1, 2), 0.2f, 45.0f);
-//    mBarrelArray[4][5] = new Barrel(new Vector2(4, 5), 0.2f, 180.0f);
-//  }
-//}

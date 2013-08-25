@@ -204,7 +204,7 @@ public class WorldRenderer {
     mDebugRenderer.setProjectionMatrix(mCamera.combined);
     mDebugRenderer.begin(ShapeType.FilledRectangle);
     mDebugRenderer.setColor(new Color(1, 1, 1, 1));
-    for (Rectangle rect : mWorld.getCollisionRects()) {
+    for (Rectangle rect : mWorld.getCollisionRectangles()) {
       mDebugRenderer.filledRect(rect.x, rect.y, rect.width, rect.height);
     }
     mDebugRenderer.end();
@@ -259,6 +259,8 @@ public class WorldRenderer {
         mWorld.getLevel().getHeight() - CAMERA_HEIGHT / 2), 10, 160);
     mFont.draw(mSpriteBatch, String.format("Delta=%6.2f Min=%6.2f Max=%6.2f",
         mCurrentDelta, mMinimumDelta, mMaximumDelta), 10, 140);
+    mFont.draw(mSpriteBatch, String.format("Delay=%6.2f",
+        bob.getDelayTimeRemaining()), 10, 120);
     mSpriteBatch.end();
   }
 }

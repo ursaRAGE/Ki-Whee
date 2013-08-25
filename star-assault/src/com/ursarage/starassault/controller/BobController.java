@@ -48,7 +48,7 @@ public class BobController {
     mKeys.put(Keys.LEFT, false);
     mKeys.put(Keys.RIGHT, false);
     mKeys.put(Keys.JUMP, false);
-  };
+  }
 
   private Array<Block> mCollidableBlockArray = new Array<Block>();
 
@@ -60,27 +60,27 @@ public class BobController {
   // Key presses and touches
 
   public void leftPressed() {
-    mKeys.get(mKeys.put(Keys.LEFT, true));
+    mKeys.put(Keys.LEFT, true);
   }
 
   public void rightPressed() {
-    mKeys.get(mKeys.put(Keys.RIGHT, true));
+    mKeys.put(Keys.RIGHT, true);
   }
 
   public void jumpPressed() {
-    mKeys.get(mKeys.put(Keys.JUMP, true));
+    mKeys.put(Keys.JUMP, true);
   }
 
   public void leftReleased() {
-    mKeys.get(mKeys.put(Keys.LEFT, false));
+    mKeys.put(Keys.LEFT, false);
   }
 
   public void rightReleased() {
-    mKeys.get(mKeys.put(Keys.RIGHT, false));
+    mKeys.put(Keys.RIGHT, false);
   }
 
   public void jumpReleased() {
-    mKeys.get(mKeys.put(Keys.JUMP, false));
+    mKeys.put(Keys.JUMP, false);
     mJumpingPressed = false;
   }
 
@@ -112,14 +112,18 @@ public class BobController {
       mBob.getVelocity().x = -MAX_VEL;
 
     if (mReset) {
-      mBob.getPosition().x = 1;
-      mBob.getPosition().y = 2;
+      mBob.getPosition().x = mWorld.getLevel().getStartingPosition().x;
+      mBob.getPosition().y = mWorld.getLevel().getStartingPosition().y;
       mBob.getVelocity().x = 0;
       mBob.getVelocity().y = 0;
       mBob.getAcceleration().x = 0;
       mBob.getAcceleration().y = 0;
       mBob.setState(State.IDLE);
       mReset = false;
+    }
+
+    if (mBob.getState().equals(State.WAITING) && mBob.getDelayTimeRemaining() > 0.0f) {
+      mBob.setDelayTimeRemaining(mBob.getDelayTimeRemaining() - delta);
     }
 
     if (!mBob.getState().equals(State.WAITING))
@@ -149,7 +153,7 @@ public class BobController {
     populateCollidableBlocks(startX, startY, endX, endY);
 
     bobRect.x += mBob.getVelocity().x;
-    mWorld.getCollisionRects().clear();
+    mWorld.getCollisionRectangles().clear();
 
     for (Barrel barrel : mWorld.getDrawableBarrels()) {
       if (barrel == null || barrel == mBob.getBarrel())
@@ -160,14 +164,9 @@ public class BobController {
         mBob.getPosition().y = barrel.getPosition().y + barrel.getBounds().getHeight() / 2 - mBob.getBounds().getHeight() / 2;
         mBob.getVelocity().x = barrel.getVelocity().x;
         mBob.getVelocity().y = barrel.getVelocity().y;
-
-        if (barrel.isAutomatic())
-          mBob.setState(State.FLYING);
-        else
-          mBob.setState(State.WAITING);
         mBob.setBarrel(barrel);
 
-        mWorld.getCollisionRects().add(barrel.getBounds());
+        mWorld.getCollisionRectangles().add(barrel.getBounds());
         break;
       }
     }
@@ -184,7 +183,7 @@ public class BobController {
         else if (mBob.getVelocity().x > 0)
           mBob.getPosition().x = block.getPosition().x - mBob.getBounds().width - 0.0001f;
         mBob.getVelocity().x = 0;
-        mWorld.getCollisionRects().add(block.getBounds());
+        mWorld.getCollisionRectangles().add(block.getBounds());
         break;
       }
     }
@@ -216,7 +215,7 @@ public class BobController {
           mBob.getPosition().y = block.getPosition().y - mBob.getBounds().height - 0.0001f;
         }
         mBob.getVelocity().y = 0;
-        mWorld.getCollisionRects().add(block.getBounds());
+        mWorld.getCollisionRectangles().add(block.getBounds());
         break;
       }
     }

@@ -7,8 +7,7 @@ import com.ursarage.starassault.screens.GameScreen;
 public class StarAssault extends Game
 {
 	@Override
-	public void create()
-  {
+	public void create() {
 //    TexturePacker2.process("C:\\Users\\Jacob\\AndroidStudioProjects\\StarAssault\\star-assault-android\\assets\\images",
 //        "C:\\Users\\Jacob\\AndroidStudioProjects\\StarAssault\\star-assault-android\\assets\\images\\textures", "textures.pack");
 
@@ -16,8 +15,7 @@ public class StarAssault extends Game
   }
 
   @Override
-  public void resize(int width, int height)
-  {
+  public void resize(int width, int height) {
     // Override this function and do nothing to prevent improper
     // scaling of textures (debug blocks work regardless)
   }

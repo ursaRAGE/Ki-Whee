@@ -17,7 +17,8 @@ public class Bob {
   Rectangle mBounds = new Rectangle();
   State	mState = State.IDLE;
   boolean	mFacingLeft = true;
-  float mStateTime = 0;
+  float mStateTime = 0.0f;
+  float mDelayTimeRemaining = 0.0f;
   Barrel mBarrel = null;
 
   public Bob(Vector2 position) {
@@ -77,10 +78,28 @@ public class Bob {
 
   public void setBarrel(Barrel barrel) {
     mBarrel = barrel;
+
+    if (barrel != null) {
+      mDelayTimeRemaining = barrel.getDelay();
+      mState = State.WAITING;
+    }
   }
 
   public Barrel getBarrel() {
     return mBarrel;
+  }
+
+  public void setDelayTimeRemaining(float delayTimeRemaining) {
+    mDelayTimeRemaining = delayTimeRemaining;
+    if (mDelayTimeRemaining <= 0.0f) {
+      mDelayTimeRemaining = 0.0f;
+      if (mBarrel.isAutomatic())
+        mState = State.FLYING;
+    }
+  }
+
+  public float getDelayTimeRemaining() {
+    return mDelayTimeRemaining;
   }
 
   public void update(float delta) {

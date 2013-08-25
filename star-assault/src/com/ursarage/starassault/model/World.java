@@ -16,7 +16,7 @@ public class World
   Level mLevel;
 
   // The collision boxes
-  Array<Rectangle> mCollisionRects = new Array<Rectangle>();
+  Array<Rectangle> mCollisionRectangles = new Array<Rectangle>();
 
   Vector2 mStartingPosition = new Vector2(1, 2);
 
@@ -24,8 +24,8 @@ public class World
     createDemoWorld();
   }
 
-  public Array<Rectangle> getCollisionRects() {
-    return mCollisionRects;
+  public Array<Rectangle> getCollisionRectangles() {
+    return mCollisionRectangles;
   }
 
   public Bob getBob() {
