@@ -151,7 +151,7 @@ public class BobController {
     bobRect.x += mBob.getVelocity().x;
     mWorld.getCollisionRects().clear();
 
-    for (Barrel barrel : mWorld.getDrawableBarrels()) { //10, 7)) {
+    for (Barrel barrel : mWorld.getDrawableBarrels()) {
       if (barrel == null || barrel == mBob.getBarrel())
         continue;
 
@@ -222,7 +222,11 @@ public class BobController {
     }
 
     bobRect.y = mBob.getPosition().y;
-    mBob.getPosition().add(mBob.getVelocity());
+
+    // Move Bob (unless waiting in barrel)
+    if (!mBob.getState().equals(State.WAITING))
+      mBob.getPosition().add(mBob.getVelocity());
+
     mBob.getBounds().x = mBob.getPosition().x;
     mBob.getBounds().y = mBob.getPosition().y;
 
@@ -251,11 +255,15 @@ public class BobController {
     if (mBob.getState().equals(State.FLYING))
       return;
 
-    if (mKeys.get(Keys.JUMP)) {
-      if (mBob.getState().equals(State.WAITING)) {
+    // Only accept jumping input if Bob is waiting inside a
+    // barrel waiting to be shot
+    if (mBob.getState().equals(State.WAITING)) {
+      if (mKeys.get(Keys.JUMP))
         mBob.setState(State.FLYING);
-        return;
-      }
+      return;
+    }
+
+    if (mKeys.get(Keys.JUMP)) {
       if (!mBob.getState().equals(State.JUMPING)) {
         mJumpingPressed = true;
         mJumpPressedTime = System.currentTimeMillis();
