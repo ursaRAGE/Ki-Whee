@@ -94,33 +94,33 @@ public class Level {
     addBlock(10, 14);
 
     // Barrel run #1
-    addBarrel(10, 0, 0.15f, 90.0f, 0.4f, true);
-    addBarrel(14, 0, 0.15f, 0.0f, 0.3f, true);
-    addBarrel(14, 3, 0.2f, -90.0f, 0.1f, true);
-    addBarrel(12, 3, 0.2f, 0.0f, 0.0f, true);
-    addBarrel(12, 9, 0.3f, 90.0f, 0.0f, true);
-    addBarrel(14, 9, 0.3f, 0.0f, 0.0f, true);
-    addBarrel(14, 14, 0.3f, -90.0f, 0.0f, true);
+    addBarrel(10, 0, 0.15f, 0.0f, 90.0f, 0.4f, true);
+    addBarrel(14, 0, 0.15f, -90.0f, 90.0f, 0.3f, true);
+    addBarrel(14, 3, 0.2f, -180.0f, 90.0f, 0.2f, true);
+    addBarrel(12, 3, 0.2f, 90.0f, -90.0f, 0.2f, true);
+    addBarrel(12, 9, 0.3f, 180.0f, -90.0f, 0.2f, true);
+    addBarrel(14, 9, 0.3f, -90.0f, 90.0f, 0.2f, true);
+    addBarrel(14, 14, 0.3f, -180.0f, 90.0f, 0.2f, true);
 
     // Barrel run #2
-    addBarrel(1, 13, 0.3f, 180.0f, 0.0f, true);
-    addBarrel(1, 8, 0.3f, 45.0f, 0.0f, true);
-    addBarrel(5, 12, 0.3f, 135.0f, 0.0f, true);
-    addBarrel(9, 8, 0.3f, 180.0f, 0.0f, true);
-    addBarrel(9, 6, 0.3f, 225.0f, 0.0f, true);
-    addBarrel(7, 4, 0.3f, 270.0f, 0.0f, true);
-    addBarrel(5, 4, 0.3f, 315.0f, 0.0f, true);
-    addBarrel(2, 7, 0.3f, 180.0f, 0.0f, true);
+    addBarrel(1, 13, 0.3f, 0.0f, 180.0f, 1.2f, true);
+    addBarrel(1, 8, 0.3f, 0.0f, 45.0f, 0.25f, true);
+    addBarrel(5, 12, 0.3f, 225.0f, -90.0f, 0.25f, true);
+    addBarrel(9, 8, 0.3f, -45.0f, -135.0f, 0.25f, true);
+    addBarrel(9, 6, 0.3f, 0.0f, -135.0f, 0.25f, true);
+    addBarrel(7, 4, 0.3f, 45.0f, -135.0f, 0.25f, true);
+    addBarrel(5, 4, 0.3f, 90.0f, -135.0f, 0.25f, true);
+    addBarrel(2, 7, 0.3f, 135.0f, 45.0f, 0.25f, true);
 
     // Extra barrel
-    addBarrel(9, 2, 0.2f, 0.0f, 0.0f, false);
+    addBarrel(9, 2, 0.2f, 0.0f, 0.0f, 0.0f, false);
   }
 
   private void addBlock(int col, int row) {
     mBlockArray[col][row] = new Block(new Vector2(col, row));
   }
 
-  private void addBarrel(int col, int row, float speed, float angle, float delay, boolean automatic) {
-    mBarrelArray[col][row] = new Barrel(new Vector2(col, row), speed, angle, delay, automatic);
+  private void addBarrel(int col, int row, float speed, float startingAngle, float rotationAngle, float delay, boolean automatic) {
+    mBarrelArray[col][row] = new Barrel(new Vector2(col, row), speed, startingAngle, rotationAngle, delay, automatic);
   }
 }

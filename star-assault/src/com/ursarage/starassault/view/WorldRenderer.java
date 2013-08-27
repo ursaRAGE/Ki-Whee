@@ -42,12 +42,10 @@ public class WorldRenderer {
   private TextureRegion mTextureBobFallRight;
   private TextureRegion mTextureBlock;
   private TextureRegion mTextureBarrel;
-  private TextureRegion mTextureCurrentBobFrame;
 
   // Animations
   private Animation mAnimationWalkLeft;
   private Animation mAnimationWalkRight;
-  private Animation mAnimationFlying;
 
   private SpriteBatch mSpriteBatch;
   private BitmapFont mFont;
@@ -140,13 +138,6 @@ public class WorldRenderer {
       walkRightFrames[i].flip(true, false);
     }
     mAnimationWalkRight = new Animation(RUNNING_FRAME_DURATION, walkRightFrames);
-
-    // Load flying frames
-    TextureRegion[] flyingFrames = new TextureRegion[5];
-    for (int i = 0; i < 5; i++) {
-      flyingFrames[i] = new TextureRegion(mTextureBobFallLeft);
-      //flyingFrames[i].
-    }
   }
 
   private void drawBlocks() {
@@ -162,28 +153,36 @@ public class WorldRenderer {
   private void drawBarrels() {
     for (Object objBarrel : mWorld.getDrawableBarrels()) { //(int) CAMERA_WIDTH, (int) CAMERA_HEIGHT)) {
       Barrel barrel = (Barrel) objBarrel;
+
+      float rotationAngle = 0.0f;
+      if (mWorld.getBob().getBarrel() == barrel) {
+        rotationAngle = barrel.getRotationAngle() *
+            (barrel.getDelay() - mWorld.getBob().getDelayTimeRemaining()) /
+            barrel.getDelay();
+      }
+
       mSpriteBatch.draw(mTextureBarrel,
           barrel.getPosition().x, barrel.getPosition().y,
           Block.SIZE / 2, Block.SIZE / 2, Block.SIZE, Block.SIZE,
-          1.0f, 1.0f, -barrel.getAngle() + 90.0f, true);
+          1.0f, 1.0f, -barrel.getStartingAngle() + 90.0f - rotationAngle, true);
     }
   }
 
   private void drawBob() {
     Bob bob = mWorld.getBob();
 
-    mTextureCurrentBobFrame = bob.isFacingLeft() ? mTextureBobIdleLeft : mTextureBobIdleRight;
+    TextureRegion textureCurrentFrame = bob.isFacingLeft() ? mTextureBobIdleLeft : mTextureBobIdleRight;
 
     if (bob.getState().equals(State.WALKING)) {
-      mTextureCurrentBobFrame = bob.isFacingLeft() ?
+      textureCurrentFrame = bob.isFacingLeft() ?
           mAnimationWalkLeft.getKeyFrame(bob.getStateTime(), true) :
           mAnimationWalkRight.getKeyFrame(bob.getStateTime(), true);
     }
     else if (bob.getState().equals(State.JUMPING)) {
       if (bob.getVelocity().y > 0)
-        mTextureCurrentBobFrame = bob.isFacingLeft() ? mTextureBobJumpLeft : mTextureBobJumpRight;
+        textureCurrentFrame = bob.isFacingLeft() ? mTextureBobJumpLeft : mTextureBobJumpRight;
       else
-        mTextureCurrentBobFrame = bob.isFacingLeft() ? mTextureBobFallLeft : mTextureBobFallRight;
+        textureCurrentFrame = bob.isFacingLeft() ? mTextureBobFallLeft : mTextureBobFallRight;
     }
 
     if (bob.getState().equals(State.FLYING)) {
@@ -193,7 +192,7 @@ public class WorldRenderer {
           1.0f, 1.0f, -(1000.0f * bob.getStateTime()) + 90.0f, true);
     }
     else {
-      mSpriteBatch.draw(mTextureCurrentBobFrame,
+      mSpriteBatch.draw(textureCurrentFrame,
           bob.getPosition().x,
           bob.getPosition().y,
           Bob.SIZE, Bob.SIZE);

@@ -9,19 +9,21 @@ public class Barrel {
   Rectangle mBounds = new Rectangle();
   Vector2 mPosition = new Vector2();
   Vector2 mVelocity = new Vector2();
-  float mAngle = 0.0f;
+  float mStartingAngle = 0.0f;
+  float mRotationAngle = 0.0f;
   float mDelay = 0.0f;
   boolean mAutomatic = true;
 
-  public Barrel(Vector2 position, float speed, float angle, float delay, boolean automatic) {
+  public Barrel(Vector2 position, float speed, float startingAngle, float rotationAngle, float delay, boolean automatic) {
     mBounds.setX(position.x);
     mBounds.setY(position.y);
     mBounds.width = SIZE;
     mBounds.height = SIZE;
     mPosition = position;
-    mVelocity.x = speed * (float)(Math.sin(Math.toRadians(angle)));
-    mVelocity.y = speed * (float)(Math.cos(Math.toRadians(angle)));
-    mAngle = angle;
+    mVelocity.x = speed * (float)(Math.sin(Math.toRadians(startingAngle + rotationAngle)));
+    mVelocity.y = speed * (float)(Math.cos(Math.toRadians(startingAngle + rotationAngle)));
+    mStartingAngle = startingAngle;
+    mRotationAngle = rotationAngle;
 
     if (delay <= 0.0f)
       mDelay = 0.001f;
@@ -43,8 +45,12 @@ public class Barrel {
     return mVelocity;
   }
 
-  public float getAngle() {
-    return mAngle;
+  public float getStartingAngle() {
+    return mStartingAngle;
+  }
+
+  public float getRotationAngle() {
+    return mRotationAngle;
   }
 
   public float getDelay() {

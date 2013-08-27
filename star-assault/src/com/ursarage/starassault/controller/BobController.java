@@ -257,7 +257,7 @@ public class BobController {
     // Only accept jumping input if Bob is waiting inside a
     // barrel waiting to be shot
     if (mBob.getState().equals(State.WAITING)) {
-      if (mKeys.get(Keys.JUMP))
+      if (mKeys.get(Keys.JUMP) && !mBob.getBarrel().isAutomatic())
         mBob.setState(State.FLYING);
       return;
     }
