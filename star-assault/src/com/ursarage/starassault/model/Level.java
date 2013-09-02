@@ -9,6 +9,7 @@ public class Level {
   private Vector2 mStartingPosition;
   private Block[][] mBlockArray;
   private Barrel[][] mBarrelArray;
+  private Bat[][] mBatArray;
 
   public Level() {
     loadDemoLevel();
@@ -34,6 +35,10 @@ public class Level {
     return mBarrelArray;
   }
 
+  public Bat[][] getBatArray() {
+    return mBatArray;
+  }
+
   public Block getBlock(int x, int y) {
     return mBlockArray[x][y];
   }
@@ -44,11 +49,13 @@ public class Level {
     mStartingPosition = new Vector2(1, 1);
     mBlockArray = new Block[mWidth][mHeight];
     mBarrelArray = new Barrel[mWidth][mHeight];
+    mBatArray = new Bat[mWidth][mHeight];
 
     for (int col = 0; col < mWidth; col++) {
       for (int row = 0; row < mHeight; row++) {
         mBlockArray[col][row] = null;
         mBarrelArray[col][row] = null;
+        mBatArray[col][row] = null;
       }
     }
 
@@ -114,6 +121,11 @@ public class Level {
 
     // Extra barrel
     addBarrel(9, 2, 0.2f, 0.0f, 0.0f, 0.0f, false);
+
+    // Add enemies
+    addBat(2, 3);
+    addBat(12, 12);
+    addBat(9, 14);
   }
 
   private void addBlock(int col, int row) {
@@ -122,5 +134,9 @@ public class Level {
 
   private void addBarrel(int col, int row, float speed, float startingAngle, float rotationAngle, float delay, boolean automatic) {
     mBarrelArray[col][row] = new Barrel(new Vector2(col, row), speed, startingAngle, rotationAngle, delay, automatic);
+  }
+
+  private void addBat(int col, int row) {
+    mBatArray[col][row] = new Bat(new Vector2(col, row));
   }
 }

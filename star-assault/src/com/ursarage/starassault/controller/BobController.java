@@ -1,9 +1,11 @@
 package com.ursarage.starassault.controller;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.ursarage.starassault.model.Barrel;
+import com.ursarage.starassault.model.Bat;
 import com.ursarage.starassault.model.Block;
 import com.ursarage.starassault.model.Bob;
 import com.ursarage.starassault.model.Bob.State;
@@ -98,7 +100,22 @@ public class BobController {
       mBob.getVelocity().add(mBob.getAcceleration().x, mBob.getAcceleration().y);
     }
 
-    checkCollisions(delta);
+    if (!mBob.getState().equals(State.FLYING) && !mBob.getState().equals(State.WAITING))
+      mBob.getVelocity().mul(delta);
+
+    if (!mBob.getState().equals(State.WAITING)) {
+      checkCollisions(delta);
+
+      // Move Bob (unless waiting in barrel)
+      if (!mBob.getState().equals(State.WAITING))
+        mBob.getPosition().add(mBob.getVelocity());
+
+      mBob.getBounds().x = mBob.getPosition().x;
+      mBob.getBounds().y = mBob.getPosition().y;
+
+      if (!mBob.getState().equals(State.FLYING) && !mBob.getState().equals(State.WAITING))
+        mBob.getVelocity().mul(1 / delta);
+    }
 
     if (!mBob.getState().equals(State.FLYING) && !mBob.getState().equals(State.WAITING)) {
       mBob.getVelocity().x *= DAMP;
@@ -132,11 +149,8 @@ public class BobController {
 
   private void checkCollisions(float delta) {
 
-    if (mBob.getState().equals(State.WAITING))
+    if (mBob.getState().equals(State.DEAD))
       return;
-
-    if (!mBob.getState().equals(State.FLYING))
-      mBob.getVelocity().mul(delta);
 
     Rectangle bobRect = rectPool.obtain();
     bobRect.set(mBob.getBounds().x, mBob.getBounds().y, mBob.getBounds().width, mBob.getBounds().height);
@@ -167,6 +181,20 @@ public class BobController {
         mBob.setBarrel(barrel);
 
         mWorld.getCollisionRectangles().add(barrel.getBounds());
+        break;
+      }
+    }
+
+    for (Bat bat : mWorld.getDrawableBats()) {
+      if (bat == null)
+        continue;
+
+      if (bobRect.contains(bat.getPosition().x + bat.getBounds().width / 2,
+                           bat.getPosition().y + bat.getBounds().height / 2)) {
+        mBob.getVelocity().x = 0.0f;
+        mBob.getVelocity().y = 0.05f;
+        mBob.setState(State.DEAD);
+        mWorld.getCollisionRectangles().add(bat.getBounds());
         break;
       }
     }
@@ -219,18 +247,6 @@ public class BobController {
         break;
       }
     }
-
-    bobRect.y = mBob.getPosition().y;
-
-    // Move Bob (unless waiting in barrel)
-    if (!mBob.getState().equals(State.WAITING))
-      mBob.getPosition().add(mBob.getVelocity());
-
-    mBob.getBounds().x = mBob.getPosition().x;
-    mBob.getBounds().y = mBob.getPosition().y;
-
-    if (!mBob.getState().equals(State.FLYING) && !mBob.getState().equals(State.WAITING))
-      mBob.getVelocity().mul(1 / delta);
   }
 
   private void populateCollidableBlocks(int startX, int startY, int endX, int endY) {
@@ -248,6 +264,10 @@ public class BobController {
 
   // Change Bob's state and parameters based on input controls
   private void processInput() {
+
+    // Ignore any input if Bob is dead
+    if (mBob.getState().equals(State.DEAD))
+      return;
 
     // Ignore any movement or jumping input while Bob is flying
     // through the air due to being shot out of a barrel

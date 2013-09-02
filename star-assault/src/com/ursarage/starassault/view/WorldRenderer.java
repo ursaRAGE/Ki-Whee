@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.ursarage.starassault.model.Barrel;
+import com.ursarage.starassault.model.Bat;
 import com.ursarage.starassault.model.Block;
 import com.ursarage.starassault.model.Bob;
 import com.ursarage.starassault.model.Bob.State;
@@ -23,6 +24,7 @@ public class WorldRenderer {
   private static final float CAMERA_WIDTH = 10f;
   private static final float CAMERA_HEIGHT = 7f;
   private static final float RUNNING_FRAME_DURATION = 0.06f;
+  private static final float BAT_FRAME_DURATION = 0.1f;
 
   private World mWorld;
   private OrthographicCamera mCamera;
@@ -46,6 +48,7 @@ public class WorldRenderer {
   // Animations
   private Animation mAnimationWalkLeft;
   private Animation mAnimationWalkRight;
+  private Animation mAnimationBat;
 
   private SpriteBatch mSpriteBatch;
   private BitmapFont mFont;
@@ -64,13 +67,18 @@ public class WorldRenderer {
   }
 
   public void render(float delta) {
-    setCameraPosition();
+
+    // Have camera follow Bob (unless he's dead)
+    if (!mWorld.getBob().getState().equals(State.DEAD))
+      setCameraPosition();
+
     mSpriteBatch.setProjectionMatrix(mCamera.combined);
 
     mSpriteBatch.begin();
       drawBlocks();
       drawBob();
       drawBarrels();
+      drawBats();
     mSpriteBatch.end();
 
     if (mDebugEnabled) {
@@ -138,10 +146,18 @@ public class WorldRenderer {
       walkRightFrames[i].flip(true, false);
     }
     mAnimationWalkRight = new Animation(RUNNING_FRAME_DURATION, walkRightFrames);
+
+    // Load bat frames
+    TextureRegion[] batFrames = new TextureRegion[4];
+    batFrames[0] = atlas.findRegion("bat-01");
+    batFrames[1] = atlas.findRegion("bat-02");
+    batFrames[2] = new TextureRegion(batFrames[0]);
+    batFrames[3] = atlas.findRegion("bat-03");
+    mAnimationBat = new Animation(BAT_FRAME_DURATION, batFrames);
   }
 
   private void drawBlocks() {
-    for (Object objBlock : mWorld.getDrawableBlocks()) { //(int)CAMERA_WIDTH, (int)CAMERA_HEIGHT)) {
+    for (Object objBlock : mWorld.getDrawableBlocks()) {
       Block block = (Block) objBlock;
       mSpriteBatch.draw(mTextureBlock,
           block.getPosition().x,
@@ -151,7 +167,7 @@ public class WorldRenderer {
   }
 
   private void drawBarrels() {
-    for (Object objBarrel : mWorld.getDrawableBarrels()) { //(int) CAMERA_WIDTH, (int) CAMERA_HEIGHT)) {
+    for (Object objBarrel : mWorld.getDrawableBarrels()) {
       Barrel barrel = (Barrel) objBarrel;
 
       float rotationAngle = 0.0f;
@@ -165,6 +181,17 @@ public class WorldRenderer {
           barrel.getPosition().x, barrel.getPosition().y,
           Block.SIZE / 2, Block.SIZE / 2, Block.SIZE, Block.SIZE,
           1.0f, 1.0f, -barrel.getStartingAngle() + 90.0f - rotationAngle, true);
+    }
+  }
+
+  private void drawBats() {
+    TextureRegion textureCurrentFrame = mAnimationBat.getKeyFrame(mWorld.getBob().getStateTime(), true);
+    for (Object objBlock : mWorld.getDrawableBats()) {
+      Bat bat = (Bat) objBlock;
+      mSpriteBatch.draw(textureCurrentFrame,
+          bat.getPosition().x,
+          bat.getPosition().y,
+          Bat.SIZE, Bat.SIZE);
     }
   }
 
@@ -214,7 +241,7 @@ public class WorldRenderer {
     mDebugRenderer.begin(ShapeType.Rectangle);
 
     // Render blocks
-    for (Object blockObj : mWorld.getDrawableBlocks()) { //(int)CAMERA_WIDTH, (int)CAMERA_HEIGHT)) {
+    for (Object blockObj : mWorld.getDrawableBlocks()) {
       Block block = (Block)blockObj;
       Rectangle rect = block.getBounds();
       mDebugRenderer.setColor(new Color(1, 0, 0, 1));
@@ -222,10 +249,18 @@ public class WorldRenderer {
     }
 
     // Render barrels
-    for (Object barrelObj : mWorld.getDrawableBarrels()) { //(int)CAMERA_WIDTH, (int)CAMERA_HEIGHT)) {
+    for (Object barrelObj : mWorld.getDrawableBarrels()) {
       Barrel barrel = (Barrel)barrelObj;
       Rectangle rect = barrel.getBounds();
       mDebugRenderer.setColor(new Color(0, 0, 1, 1));
+      mDebugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
+    }
+
+    // Render bats
+    for (Object batObj : mWorld.getDrawableBats()) {
+      Bat bat = (Bat)batObj;
+      Rectangle rect = bat.getBounds();
+      mDebugRenderer.setColor(new Color(1, 0, 0, 1));
       mDebugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
     }
 

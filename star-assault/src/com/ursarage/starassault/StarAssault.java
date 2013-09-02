@@ -8,8 +8,8 @@ public class StarAssault extends Game
 {
 	@Override
 	public void create() {
-//    TexturePacker2.process("C:\\Users\\Jacob\\AndroidStudioProjects\\StarAssault\\star-assault-android\\assets\\images",
-//        "C:\\Users\\Jacob\\AndroidStudioProjects\\StarAssault\\star-assault-android\\assets\\images\\textures", "textures.pack");
+//  TexturePacker2.process("C:\\Users\\Jacob\\Documents\\GitHub\\Ki-Whee\\star-assault-android\\assets\\images",
+//      "C:\\Users\\Jacob\\Documents\\GitHub\\Ki-Whee\\star-assault-android\\assets\\images\\textures", "textures.pack");
 
     setScreen(new GameScreen());
   }

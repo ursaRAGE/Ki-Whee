@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Bob {
 
   public enum State {
-    IDLE, WALKING, JUMPING, FLYING, WAITING
+    IDLE, WALKING, JUMPING, FLYING, WAITING, DEAD
   }
 
   public static final float SIZE = 0.5f; // half a unit
@@ -72,6 +72,7 @@ public class Bob {
       case JUMPING: return "JUMPING";
       case FLYING: return "FLYING";
       case WAITING: return "WAITING";
+      case DEAD: return "DEAD";
     }
     return "UNKNOWN";
   }

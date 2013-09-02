@@ -85,6 +85,22 @@ public class World
     return barrels;
   }
 
+  public List<Bat> getDrawableBats() {
+
+    List<Bat> bats = new ArrayList<Bat>();
+    Bat bat;
+
+    for (int col = 0; col < mLevel.getWidth(); col++) {
+      for (int row = 0; row < mLevel.getHeight(); row++) {
+        bat = mLevel.getBatArray()[col][row];
+        if (bat != null)
+          bats.add(bat);
+      }
+    }
+
+    return bats;
+  }
+
   private void createDemoWorld() {
     mBob = new Bob(mStartingPosition);
     mLevel = new Level();
