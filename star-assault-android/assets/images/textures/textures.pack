@@ -3,93 +3,100 @@ textures.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+gameover
+  rotate: false
+  xy: 1, 1
+  size: 170, 56
+  orig: 170, 56
+  offset: 0, 0
+  index: -1
 barrel
   rotate: false
-  xy: 1, 11
+  xy: 173, 9
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 block
   rotate: false
-  xy: 51, 11
+  xy: 223, 9
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 bat-01
   rotate: false
-  xy: 101, 35
+  xy: 273, 33
   size: 28, 24
   orig: 28, 24
   offset: 0, 0
   index: -1
 bat-02
   rotate: false
-  xy: 131, 35
+  xy: 303, 33
   size: 28, 24
   orig: 28, 24
   offset: 0, 0
   index: -1
 bat-03
   rotate: false
-  xy: 161, 35
+  xy: 333, 33
   size: 28, 24
   orig: 28, 24
   offset: 0, 0
   index: -1
 bob-01
   rotate: false
-  xy: 191, 31
+  xy: 363, 29
   size: 24, 28
   orig: 24, 28
   offset: 0, 0
   index: -1
 bob-02
   rotate: false
-  xy: 217, 31
+  xy: 389, 29
   size: 24, 28
   orig: 24, 28
   offset: 0, 0
   index: -1
-bob-03
-  rotate: false
-  xy: 101, 7
-  size: 24, 26
-  orig: 24, 26
-  offset: 0, 0
-  index: -1
-bob-04
-  rotate: false
-  xy: 127, 7
-  size: 24, 26
-  orig: 24, 26
-  offset: 0, 0
-  index: -1
 bob-05
   rotate: false
-  xy: 153, 5
+  xy: 415, 29
   size: 24, 28
   orig: 24, 28
   offset: 0, 0
   index: -1
 bob-06
   rotate: false
-  xy: 179, 1
+  xy: 441, 29
   size: 24, 28
   orig: 24, 28
   offset: 0, 0
   index: -1
 bob-down
   rotate: false
-  xy: 205, 1
+  xy: 467, 29
   size: 24, 28
   orig: 24, 28
   offset: 0, 0
   index: -1
+bob-03
+  rotate: false
+  xy: 273, 5
+  size: 24, 26
+  orig: 24, 26
+  offset: 0, 0
+  index: -1
+bob-04
+  rotate: false
+  xy: 299, 5
+  size: 24, 26
+  orig: 24, 26
+  offset: 0, 0
+  index: -1
 bob-up
   rotate: false
-  xy: 231, 1
+  xy: 325, 3
   size: 24, 28
   orig: 24, 28
   offset: 0, 0

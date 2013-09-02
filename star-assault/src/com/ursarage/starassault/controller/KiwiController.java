@@ -112,6 +112,10 @@ public class KiwiController {
       mKiwi.getBounds().x = mKiwi.getPosition().x;
       mKiwi.getBounds().y = mKiwi.getPosition().y;
 
+      // If Kiwi falls below screen, it's game over
+      if (mKiwi.getPosition().y < -mKiwi.SIZE)
+        mKiwi.setState(State.DEAD);
+
       if (!mKiwi.getState().equals(State.FLYING) && !mKiwi.getState().equals(State.WAITING))
         mKiwi.getVelocity().mul(1 / delta);
     }

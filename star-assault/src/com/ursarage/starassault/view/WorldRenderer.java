@@ -44,6 +44,7 @@ public class WorldRenderer {
   private TextureRegion mTextureBobFallRight;
   private TextureRegion mTextureBlock;
   private TextureRegion mTextureBarrel;
+  private TextureRegion mTextureGameOver;
 
   // Animations
   private Animation mAnimationWalkLeft;
@@ -79,6 +80,8 @@ public class WorldRenderer {
       drawKiwi();
       drawBarrels();
       drawBats();
+      if (mWorld.getKiwi().getState().equals(State.DEAD))
+        drawGameOverMessage();
     mSpriteBatch.end();
 
     if (mDebugEnabled) {
@@ -131,6 +134,7 @@ public class WorldRenderer {
     mTextureBobFallRight.flip(true, false);
     mTextureBlock = atlas.findRegion("block");
     mTextureBarrel = atlas.findRegion("barrel");
+    mTextureGameOver = atlas.findRegion("gameover");
 
     // Load walking left frames
     TextureRegion[] walkLeftFrames = new TextureRegion[5];
@@ -224,6 +228,17 @@ public class WorldRenderer {
           kiwi.getPosition().y,
           Kiwi.SIZE, Kiwi.SIZE);
     }
+  }
+
+  private void drawGameOverMessage() {
+    // How do we get this message to be pixel perfect?
+    // Should these be constant as other similar items?
+    float messageWidth = mTextureGameOver.getRegionWidth() / 50;
+    float messageHeight = mTextureGameOver.getRegionHeight() / 50;
+    mSpriteBatch.draw(mTextureGameOver,
+        mCamera.position.x - messageWidth / 2,
+        mCamera.position.y - messageHeight / 2,
+        messageWidth, messageHeight);
   }
 
   private void drawCollisionBlocks() {
