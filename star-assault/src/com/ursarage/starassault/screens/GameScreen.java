@@ -5,7 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.ursarage.starassault.controller.BobController;
+import com.ursarage.starassault.controller.KiwiController;
 import com.ursarage.starassault.view.WorldRenderer;
 import com.ursarage.starassault.model.World;
 
@@ -13,7 +13,7 @@ public class GameScreen implements Screen, InputProcessor {
 
   private World mWorld;
   private WorldRenderer mRenderer;
-  private BobController mController;
+  private KiwiController mController;
   private int mWidth;
   private int mHeight;
 
@@ -44,7 +44,7 @@ public class GameScreen implements Screen, InputProcessor {
   public void show() {
     mWorld = new World();
     mRenderer = new WorldRenderer(mWorld, false);
-    mController = new BobController(mWorld);
+    mController = new KiwiController(mWorld);
     Gdx.input.setInputProcessor(this);
   }
 

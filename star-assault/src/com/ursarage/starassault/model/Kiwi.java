@@ -3,7 +3,7 @@ package com.ursarage.starassault.model;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Bob {
+public class Kiwi {
 
   public enum State {
     IDLE, WALKING, JUMPING, FLYING, WAITING, DEAD
@@ -21,7 +21,7 @@ public class Bob {
   float mDelayTimeRemaining = 0.0f;
   Barrel mBarrel = null;
 
-  public Bob(Vector2 position) {
+  public Kiwi(Vector2 position) {
     mPosition = position;
     mBounds.x = position.x;
     mBounds.y = position.y;

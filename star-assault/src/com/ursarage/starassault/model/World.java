@@ -10,9 +10,9 @@ import java.util.List;
 public class World
 {
   // Our player controlled hero
-  Bob mBob;
+  Kiwi mKiwi;
 
-  // A world has a level through which Bob needs to go through
+  // A world has a level through which Kiwi needs to go through
   Level mLevel;
 
   // The collision boxes
@@ -28,8 +28,8 @@ public class World
     return mCollisionRectangles;
   }
 
-  public Bob getBob() {
-    return mBob;
+  public Kiwi getKiwi() {
+    return mKiwi;
   }
 
   public Level getLevel() {
@@ -37,8 +37,8 @@ public class World
   }
 
   public List<Block> getDrawableBlocks() { //int width, int height) {
-    int x = (int)mBob.getPosition().x - mLevel.getWidth();
-    int y = (int)mBob.getPosition().y - mLevel.getHeight();
+    int x = (int) mKiwi.getPosition().x - mLevel.getWidth();
+    int y = (int) mKiwi.getPosition().y - mLevel.getHeight();
 
     if (x < 0)
       x = 0;
@@ -102,7 +102,7 @@ public class World
   }
 
   private void createDemoWorld() {
-    mBob = new Bob(mStartingPosition);
+    mKiwi = new Kiwi(mStartingPosition);
     mLevel = new Level();
   }
 }

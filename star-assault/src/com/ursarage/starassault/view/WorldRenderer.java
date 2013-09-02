@@ -15,8 +15,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.ursarage.starassault.model.Barrel;
 import com.ursarage.starassault.model.Bat;
 import com.ursarage.starassault.model.Block;
-import com.ursarage.starassault.model.Bob;
-import com.ursarage.starassault.model.Bob.State;
+import com.ursarage.starassault.model.Kiwi;
+import com.ursarage.starassault.model.Kiwi.State;
 import com.ursarage.starassault.model.World;
 
 public class WorldRenderer {
@@ -68,15 +68,15 @@ public class WorldRenderer {
 
   public void render(float delta) {
 
-    // Have camera follow Bob (unless he's dead)
-    if (!mWorld.getBob().getState().equals(State.DEAD))
+    // Have camera follow Kiwi (unless he's dead)
+    if (!mWorld.getKiwi().getState().equals(State.DEAD))
       setCameraPosition();
 
     mSpriteBatch.setProjectionMatrix(mCamera.combined);
 
     mSpriteBatch.begin();
       drawBlocks();
-      drawBob();
+      drawKiwi();
       drawBarrels();
       drawBats();
     mSpriteBatch.end();
@@ -99,8 +99,8 @@ public class WorldRenderer {
   }
 
   private void setCameraPosition() {
-    float cameraPositionX = mWorld.getBob().getPosition().x + mWorld.getBob().getBounds().width / 2;
-    float cameraPositionY = mWorld.getBob().getPosition().y + mWorld.getBob().getBounds().height / 2;
+    float cameraPositionX = mWorld.getKiwi().getPosition().x + mWorld.getKiwi().getBounds().width / 2;
+    float cameraPositionY = mWorld.getKiwi().getPosition().y + mWorld.getKiwi().getBounds().height / 2;
 
     if (cameraPositionX < CAMERA_WIDTH / 2)
       cameraPositionX = CAMERA_WIDTH / 2;
@@ -171,9 +171,9 @@ public class WorldRenderer {
       Barrel barrel = (Barrel) objBarrel;
 
       float rotationAngle = 0.0f;
-      if (mWorld.getBob().getBarrel() == barrel) {
+      if (mWorld.getKiwi().getBarrel() == barrel) {
         rotationAngle = barrel.getRotationAngle() *
-            (barrel.getDelay() - mWorld.getBob().getDelayTimeRemaining()) /
+            (barrel.getDelay() - mWorld.getKiwi().getDelayTimeRemaining()) /
             barrel.getDelay();
       }
 
@@ -185,7 +185,7 @@ public class WorldRenderer {
   }
 
   private void drawBats() {
-    TextureRegion textureCurrentFrame = mAnimationBat.getKeyFrame(mWorld.getBob().getStateTime(), true);
+    TextureRegion textureCurrentFrame = mAnimationBat.getKeyFrame(mWorld.getKiwi().getStateTime(), true);
     for (Object objBlock : mWorld.getDrawableBats()) {
       Bat bat = (Bat) objBlock;
       mSpriteBatch.draw(textureCurrentFrame,
@@ -195,34 +195,34 @@ public class WorldRenderer {
     }
   }
 
-  private void drawBob() {
-    Bob bob = mWorld.getBob();
+  private void drawKiwi() {
+    Kiwi kiwi = mWorld.getKiwi();
 
-    TextureRegion textureCurrentFrame = bob.isFacingLeft() ? mTextureBobIdleLeft : mTextureBobIdleRight;
+    TextureRegion textureCurrentFrame = kiwi.isFacingLeft() ? mTextureBobIdleLeft : mTextureBobIdleRight;
 
-    if (bob.getState().equals(State.WALKING)) {
-      textureCurrentFrame = bob.isFacingLeft() ?
-          mAnimationWalkLeft.getKeyFrame(bob.getStateTime(), true) :
-          mAnimationWalkRight.getKeyFrame(bob.getStateTime(), true);
+    if (kiwi.getState().equals(State.WALKING)) {
+      textureCurrentFrame = kiwi.isFacingLeft() ?
+          mAnimationWalkLeft.getKeyFrame(kiwi.getStateTime(), true) :
+          mAnimationWalkRight.getKeyFrame(kiwi.getStateTime(), true);
     }
-    else if (bob.getState().equals(State.JUMPING)) {
-      if (bob.getVelocity().y > 0)
-        textureCurrentFrame = bob.isFacingLeft() ? mTextureBobJumpLeft : mTextureBobJumpRight;
+    else if (kiwi.getState().equals(State.JUMPING)) {
+      if (kiwi.getVelocity().y > 0)
+        textureCurrentFrame = kiwi.isFacingLeft() ? mTextureBobJumpLeft : mTextureBobJumpRight;
       else
-        textureCurrentFrame = bob.isFacingLeft() ? mTextureBobFallLeft : mTextureBobFallRight;
+        textureCurrentFrame = kiwi.isFacingLeft() ? mTextureBobFallLeft : mTextureBobFallRight;
     }
 
-    if (bob.getState().equals(State.FLYING)) {
+    if (kiwi.getState().equals(State.FLYING)) {
       mSpriteBatch.draw(mTextureBobFallLeft,
-          bob.getPosition().x, bob.getPosition().y,
-          Bob.SIZE / 2, Bob.SIZE / 2, Bob.SIZE, Bob.SIZE,
-          1.0f, 1.0f, -(1000.0f * bob.getStateTime()) + 90.0f, true);
+          kiwi.getPosition().x, kiwi.getPosition().y,
+          Kiwi.SIZE / 2, Kiwi.SIZE / 2, Kiwi.SIZE, Kiwi.SIZE,
+          1.0f, 1.0f, -(1000.0f * kiwi.getStateTime()) + 90.0f, true);
     }
     else {
       mSpriteBatch.draw(textureCurrentFrame,
-          bob.getPosition().x,
-          bob.getPosition().y,
-          Bob.SIZE, Bob.SIZE);
+          kiwi.getPosition().x,
+          kiwi.getPosition().y,
+          Kiwi.SIZE, Kiwi.SIZE);
     }
   }
 
@@ -264,9 +264,9 @@ public class WorldRenderer {
       mDebugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
     }
 
-    // Render Bob
-    Bob bob = mWorld.getBob();
-    Rectangle rect = bob.getBounds();
+    // Render Kiwi
+    Kiwi kiwi = mWorld.getKiwi();
+    Rectangle rect = kiwi.getBounds();
     mDebugRenderer.setColor(new Color(0, 1, 0, 1));
     mDebugRenderer.rect(rect.x, rect.y, rect.width, rect.height);
     mDebugRenderer.end();
@@ -277,24 +277,24 @@ public class WorldRenderer {
     mSpriteBatch.setProjectionMatrix(mat);
     mSpriteBatch.begin();
     mFont.draw(mSpriteBatch, String.format("Pos x=%4.2f y=%4.2f",
-        bob.getPosition().x, bob.getPosition().y), 10, 260);
+        kiwi.getPosition().x, kiwi.getPosition().y), 10, 260);
     mFont.draw(mSpriteBatch, String.format("Vel x=%4.2f y=%4.2f",
-        bob.getVelocity().x, bob.getVelocity().y), 10, 240);
+        kiwi.getVelocity().x, kiwi.getVelocity().y), 10, 240);
     mFont.draw(mSpriteBatch, String.format("Acc x=%4.2f y=%4.2f",
-        bob.getVelocity().x, bob.getAcceleration().y), 10, 220);
-    mFont.draw(mSpriteBatch, bob.getStateString(), 10, 200);
+        kiwi.getVelocity().x, kiwi.getAcceleration().y), 10, 220);
+    mFont.draw(mSpriteBatch, kiwi.getStateString(), 10, 200);
     mFont.draw(mSpriteBatch, String.format("CamX %4.2f %4.2f %4.2f",
         CAMERA_WIDTH / 2,
-        bob.getPosition().x,
+        kiwi.getPosition().x,
         mWorld.getLevel().getWidth() - CAMERA_WIDTH / 2), 10, 180);
     mFont.draw(mSpriteBatch, String.format("CamY %4.2f %4.2f %4.2f",
         CAMERA_HEIGHT / 2,
-        bob.getPosition().y,
+        kiwi.getPosition().y,
         mWorld.getLevel().getHeight() - CAMERA_HEIGHT / 2), 10, 160);
     mFont.draw(mSpriteBatch, String.format("Delta=%6.2f Min=%6.2f Max=%6.2f",
         mCurrentDelta, mMinimumDelta, mMaximumDelta), 10, 140);
     mFont.draw(mSpriteBatch, String.format("Delay=%6.2f",
-        bob.getDelayTimeRemaining()), 10, 120);
+        kiwi.getDelayTimeRemaining()), 10, 120);
     mSpriteBatch.end();
   }
 }
